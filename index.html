@@ -232,24 +232,7 @@ body.dark .weak-practice-btn {
   font-size: 0.85rem;
 }
 
-#recentAccuracy span.dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin-right: 2px;
-  margin-bottom: 2px;
-}
-
-#recentAccuracy span.correct-dot {
-  background: #2e7d32;
-}
-
-#recentAccuracy span.incorrect-dot {
-  background: #c62828;
-}
-
-</style>
+#recentAccuracy span#recentAccuracy span#recentAccuracy span</style>
 </head>
 <body>
 <button id="darkToggle" style="position:fixed;top:10px;right:10px;z-index:999;">Dark Mode</button>
@@ -308,8 +291,6 @@ body.dark .weak-practice-btn {
     <div id="progressBarInner"></div>
   </div>
 </div>
-<div id="recentAccuracy"></div>
-
 <div id="bankQuestionId"></div>
 <div id="questionText"></div>
 <form id="optionsForm">
@@ -322,6 +303,7 @@ body.dark .weak-practice-btn {
 <div class="controls">
 <button id="checkBtn">Check Answer</button>
 <button id="nextBtn" disabled>Next Question</button>
+<button id="resetBtn" type="button">Reset</button>
 </div>
 
 <div id="score"></div>
@@ -470,6 +452,7 @@ const UI_STRINGS = {
     wrongTitle: 'Wrong Questions Tracker',
     wrongDownload: 'Download wrong questions CSV',
     scorePrefix: 'Score',
+    resetBtn: 'Reset',
     progressLabel: 'Progress',
     progressExamSuffix: ' (exam set)',
     progressNoRepeatSuffix: ' (cycle)',
@@ -492,7 +475,7 @@ const UI_STRINGS = {
     retakeWrongDesc: 'Build a new quiz using only the questions you missed in this exam.',
     statusRetakeWrong: 'Retake mode: practicing only questions you got wrong in the last exam.',
     selectAnswerPrompt: 'Please select an answer.',
-    loadedMessage: 'Loaded {N} questions. Click "Next Question" to start.',
+    loadedMessage: 'Loaded {N} questions successfully.',
     checkBtn: 'Check Answer',
     nextBtn: 'Next Question',
     darkToggle: 'Dark Mode',
@@ -564,9 +547,10 @@ const UI_STRINGS = {
     retakeWrongDesc: 'Créer un nouveau quiz uniquement avec les questions ratées lors de cet examen.',
     statusRetakeWrong: 'Mode révision : vous pratiquez seulement les questions ratées lors du dernier examen.',
     selectAnswerPrompt: 'Veuillez sélectionner une réponse.',
-    loadedMessage: 'Chargé {N} questions. Cliquez sur « Question suivante » pour commencer.',
+    loadedMessage: 'Chargé {N} questions avec succès.',
     checkBtn: 'Vérifier la réponse',
     nextBtn: 'Question suivante',
+    resetBtn: 'Réinitialiser',
     darkToggle: 'Mode sombre',
     questionCounterLabel: 'Question',
     mobileOn: 'Mode mobile',
@@ -684,6 +668,7 @@ function applyLanguage() {
   }
   if (checkBtn) checkBtn.textContent = strings.checkBtn;
   if (nextBtn) nextBtn.textContent = strings.nextBtn;
+  if (resetBtn && strings.resetBtn) resetBtn.textContent = strings.resetBtn;
   if (darkToggleBtn) darkToggleBtn.textContent = strings.darkToggle;
   if (mobileToggleBtn) {
     mobileToggleBtn.textContent = isMobileMode ? strings.mobileOff : strings.mobileOn;
@@ -699,8 +684,7 @@ function applyLanguage() {
   updateCategoryTrainingVisibility();
   // Update progress & recent accuracy labels for current language
   updateProgressUI();
-  updateRecentAccuracy();
-  document.documentElement.lang = currentLanguage;
+document.documentElement.lang = currentLanguage;
 }
 
 
@@ -726,6 +710,7 @@ const recentAccuracyEl = document.getElementById('recentAccuracy');
 const scoreEl = document.getElementById('score');
 const checkBtn = document.getElementById('checkBtn');
 const nextBtn = document.getElementById('nextBtn');
+const resetBtn = document.getElementById('resetBtn');
 const modeRandomRadio = document.getElementById('modeRandom');
 const modeNoRepeatRadio = document.getElementById('modeNoRepeat');
 const modeExamRadio = document.getElementById('modeExam');
@@ -814,8 +799,7 @@ modeExamRadio.addEventListener('change', () => {
     recentResults = [];
     wrongQuestionIndices = new Set();
     updateScore();
-    updateRecentAccuracy();
-        updateProgressUI();
+updateProgressUI();
     resetQuestionSequence();
     if (categoryReportEl) {
       categoryReportEl.innerHTML = '';
@@ -886,8 +870,7 @@ function loadOfficialBank(url) {
         recentResults = [];
         wrongQuestionIndices = new Set();
         updateScore();
-        updateRecentAccuracy();
-        updateProgressUI();
+updateProgressUI();
 
         resetQuestionSequence();
         resetFeedback();
@@ -928,6 +911,7 @@ if (downloadCsvBtnEl) {
 
 checkBtn.addEventListener('click', handleCheckAnswer);
 nextBtn.addEventListener('click', showNextQuestion);
+resetBtn.addEventListener('click', resetApp);
 
 // === Real CSV parser that supports:
 // - commas in fields
@@ -1021,7 +1005,6 @@ totalCorrect = 0;
 recentResults = [];
 wrongQuestionIndices = new Set();
 updateScore();
-updateRecentAccuracy();
 updateProgressUI();
 
 resetQuestionSequence();
@@ -1470,14 +1453,21 @@ if (selectionMode === 'norepeat' || selectionMode === 'exam' || selectionMode ==
     return;
   }
   if (questionSequencePosition >= questionSequence.length) {
+    const strings = (UI_STRINGS[currentLanguage] || UI_STRINGS.en);
     if (selectionMode === 'exam') {
-      statusEl.textContent = (UI_STRINGS[currentLanguage] || UI_STRINGS.en).statusExamComplete;
+      // Exam finished: no more Next Question clicks
+      statusEl.textContent = strings.statusExamComplete;
+      nextBtn.disabled = true;
+      return;
+    } else if (selectionMode === 'norepeat') {
+      // No-repeat mode finished: all questions used exactly once
+      statusEl.textContent = strings.statusAllSeen;
       nextBtn.disabled = true;
       return;
     } else {
-      // All questions have been used once; reshuffle for a new cycle
+      // For category training (or other future modes), keep cycling
       resetQuestionSequence();
-      statusEl.textContent = (UI_STRINGS[currentLanguage] || UI_STRINGS.en).statusAllSeen;
+      statusEl.textContent = strings.statusAllSeen;
     }
   }
   index = questionSequence[questionSequencePosition++];
@@ -1612,8 +1602,33 @@ highlightOptions(selectedIndex, q.correctIndex);
 showFeedback(isCorrect, q);
 
 updateScore();
-updateRecentAccuracy();
 updateProgressUI();
+
+// At the end of an exam or a no-repeat cycle, disable "Next Question"
+const strings = UI_STRINGS[currentLanguage] || UI_STRINGS.en;
+if (
+  selectionMode === 'exam' &&
+  questionSequence &&
+  questionSequence.length > 0 &&
+  totalAsked >= questionSequence.length
+) {
+  statusEl.textContent = strings.statusExamComplete;
+  nextBtn.disabled = true;
+  checkBtn.disabled = true;
+  return;
+}
+
+if (
+  selectionMode === 'norepeat' &&
+  questionSequence &&
+  questionSequence.length > 0 &&
+  cycleAnsweredCount >= questionSequence.length
+) {
+  statusEl.textContent = strings.statusAllSeen;
+  nextBtn.disabled = true;
+  checkBtn.disabled = true;
+  return;
+}
 
 checkBtn.disabled = true;
 nextBtn.disabled = false;
@@ -1705,24 +1720,6 @@ function updateProgressUI() {
   progressBarInnerEl.style.width = isNaN(percent) ? '0%' : percent + '%';
 }
 
-function updateRecentAccuracy() {
-  if (!recentAccuracyEl) return;
-  const strings = UI_STRINGS[currentLanguage] || UI_STRINGS.en;
-  if (!recentResults || recentResults.length === 0) {
-    recentAccuracyEl.textContent = '';
-    return;
-  }
-  let html = `<div><strong>${strings.recentAccuracyLabel || 'Recent answers'} </strong></div>`;
-  html += '<div>';
-  recentResults.forEach(r => {
-    const cls = r ? 'correct-dot' : 'incorrect-dot';
-    html += `<span class="dot ${cls}"></span>`;
-  });
-  html += '</div>';
-  recentAccuracyEl.innerHTML = html;
-}
-
-
 function attachWeakAreaHandlers() {
   if (!categoryReportEl) return;
   const buttons = categoryReportEl.querySelectorAll('.weak-practice-btn');
@@ -1767,6 +1764,14 @@ function attachRetakeWrongHandler() {
     recentResults = [];
     categoryStats = null;
 
+    // Reset score display and qualification/result text
+    updateScore();
+
+    // Reset question counter label immediately to 0 for this new session
+    if (typeof questionCounterEl !== 'undefined' && questionCounterEl) {
+      questionCounterEl.textContent = `${strings.questionCounterLabel} 0`;
+    }
+
     statusEl.textContent = strings.statusRetakeWrong || '';
     resetFeedback();
     clearQuestion();
@@ -1774,6 +1779,7 @@ function attachRetakeWrongHandler() {
     updateCategoryTrainingVisibility();
     updateProgressUI();
     showNextQuestion();
+    scrollToQuizCard();
   });
 }
 
@@ -1801,6 +1807,19 @@ function startCategoryPracticeFor(categoryCode) {
 
   statusEl.textContent = strings.loadedMessage.replace('{N}', questions.length);
 
+  // Reset overall counters so this focused training starts fresh
+  totalAsked = 0;
+  totalCorrect = 0;
+  recentResults = [];
+  cycleAnsweredCount = 0;
+  updateScore();
+updateProgressUI();
+
+  // Reset question counter label immediately to 0 for this focused training
+  if (typeof questionCounterEl !== 'undefined' && questionCounterEl) {
+    questionCounterEl.textContent = `${strings.questionCounterLabel} 0`;
+  }
+
   // Reset cycle for this focused training and show first question
   resetQuestionSequence();
   resetFeedback();
@@ -1808,6 +1827,129 @@ function startCategoryPracticeFor(categoryCode) {
   updateModeIndicator();
   updateCategoryTrainingVisibility();
   showNextQuestion();
+  scrollToQuizCard();
+}
+
+
+function scrollToQuizCard() {
+  try {
+    const quizCard = document.getElementById('quizCard');
+    if (quizCard) {
+      quizCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  } catch (e) {
+    console.error('scrollToQuizCard error', e);
+  }
+}
+
+
+function resetApp() {
+  // Scroll to very top
+  try {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (e) {
+    window.scrollTo(0, 0);
+  }
+
+  // Reset core state (without full page reload)
+  questions = [];
+  currentQuestionIndex = null;
+  totalAsked = 0;
+  totalCorrect = 0;
+  recentResults = [];
+  wrongQuestionIndices = new Set();
+  categorySelection = new Set();
+  categoryStats = {};
+  cycleAnsweredCount = 0;
+  examProfile = 'basic';
+  selectionMode = 'random';
+  questionSequence = [];
+  questionSequencePosition = 0;
+
+  // Reset language back to English and radios
+  currentLanguage = 'en';
+  if (typeof langEnRadio !== 'undefined' && langEnRadio) {
+    langEnRadio.checked = true;
+  }
+  if (typeof langFrRadio !== 'undefined' && langFrRadio) {
+    langFrRadio.checked = false;
+  }
+
+  // Reset mode radios
+  if (typeof modeRandomRadio !== 'undefined' && modeRandomRadio) {
+    modeRandomRadio.checked = true;
+  }
+  if (typeof modeNoRepeatRadio !== 'undefined' && modeNoRepeatRadio) {
+    modeNoRepeatRadio.checked = false;
+  }
+  if (typeof modeExamRadio !== 'undefined' && modeExamRadio) {
+    modeExamRadio.checked = false;
+  }
+  if (typeof modeCategoryRadio !== 'undefined' && modeCategoryRadio) {
+    modeCategoryRadio.checked = false;
+  }
+
+  // Hide quiz card and clear question UI
+  if (typeof quizCard !== 'undefined' && quizCard) {
+    quizCard.style.display = 'none';
+  }
+  if (typeof bankQuestionIdEl !== 'undefined' && bankQuestionIdEl) {
+    bankQuestionIdEl.textContent = '';
+  }
+  if (typeof questionTextEl !== 'undefined' && questionTextEl) {
+    questionTextEl.textContent = '';
+  }
+  if (typeof optionsEl !== 'undefined' && optionsEl) {
+    optionsEl.innerHTML = '';
+  }
+  if (typeof feedbackEl !== 'undefined' && feedbackEl) {
+    feedbackEl.textContent = '';
+    feedbackEl.className = '';
+  }
+  if (typeof explanationEl !== 'undefined' && explanationEl) {
+    explanationEl.innerHTML = '';
+  }
+  if (typeof questionCounterEl !== 'undefined' && questionCounterEl) {
+    const s = UI_STRINGS.en;
+    questionCounterEl.textContent = `${s.questionCounterLabel} 0`;
+  }
+
+  // Reset progress UI
+  if (typeof progressLabelEl !== 'undefined' && progressLabelEl) {
+    progressLabelEl.textContent = '';
+  }
+  if (typeof progressBarInnerEl !== 'undefined' && progressBarInnerEl) {
+    progressBarInnerEl.style.width = '0%';
+  }
+
+  // Reset score and reports
+  if (typeof scoreEl !== 'undefined' && scoreEl) {
+    const s = UI_STRINGS.en;
+    scoreEl.textContent = `${s.scorePrefix}: –`;
+  }
+  if (typeof categoryReportEl !== 'undefined' && categoryReportEl) {
+    categoryReportEl.innerHTML = '';
+  }
+  if (typeof recentAccuracyEl !== 'undefined' && recentAccuracyEl) {
+    recentAccuracyEl.textContent = '';
+  }
+
+  // Reset status
+  if (typeof statusEl !== 'undefined' && statusEl) {
+    const s = UI_STRINGS.en;
+    statusEl.textContent = s.statusNoFile;
+  }
+
+  // Disable buttons until a bank is loaded again
+  if (typeof checkBtn !== 'undefined' && checkBtn) {
+    checkBtn.disabled = true;
+  }
+  if (typeof nextBtn !== 'undefined' && nextBtn) {
+    nextBtn.disabled = true;
+  }
+
+  // Re-apply language strings (English baseline after reset)
+  applyLanguage();
 }
 
 function updateScore() {
@@ -1962,6 +2104,62 @@ document.getElementById('mobileToggle').addEventListener('click',()=>{
   const strings = UI_STRINGS[currentLanguage] || UI_STRINGS.en;
   document.getElementById('mobileToggle').textContent = isMobileMode ? strings.mobileOff : strings.mobileOn;
 });
+
+// Global delegated click handler for category practice & retake-wrong actions
+// This ensures the buttons work even after dynamic HTML updates.
+if (categoryReportEl) {
+  categoryReportEl.addEventListener('click', function (e) {
+    const target = e.target;
+    if (!target) return;
+
+    // Practice only this category
+    if (target.classList.contains('weak-practice-btn')) {
+      const code = target.getAttribute('data-cat');
+      if (code) {
+        startCategoryPracticeFor(code);
+      }
+      return;
+    }
+
+    // Retake only wrong questions
+    if (target.id === 'retakeWrongBtn') {
+      const strings = UI_STRINGS[currentLanguage] || UI_STRINGS.en;
+      if (!questions || questions.length === 0 || !wrongQuestionIndices || wrongQuestionIndices.size === 0) {
+        return;
+      }
+
+      const indices = Array.from(wrongQuestionIndices);
+      if (indices.length === 0) return;
+
+      // Shuffle for variety
+      for (let i = indices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const tmp = indices[i];
+        indices[i] = indices[j];
+        indices[j] = tmp;
+      }
+
+      selectionMode = 'wrongonly';
+      questionSequence = indices;
+      questionSequencePosition = 0;
+
+      // Reset stats for this focused retake session
+      totalAsked = 0;
+      totalCorrect = 0;
+      recentResults = [];
+      categoryStats = null;
+
+      statusEl.textContent = strings.statusRetakeWrong || '';
+      resetFeedback();
+      clearQuestion();
+      updateModeIndicator();
+      updateCategoryTrainingVisibility();
+      updateProgressUI();
+      showNextQuestion();
+    }
+  });
+}
+
 </script>
 
 <div class="card" id="supportCard">
