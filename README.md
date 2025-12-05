@@ -2,430 +2,403 @@
 
 A free, offline-ready exam practice tool for Basic & Advanced Amateur Radio certification.
 
-## Overview
+Overview
 
-This HTML-based HAM Exam Trainer is designed for Canadian amateur radio students preparing for the ISED Basic or Advanced certification exams.  
+This HTML-based HAM Exam Trainer is designed for Canadian amateur radio students preparing for the ISED Basic or Advanced certification exams.
 It supports:
 
-- English and French (bilingual UI)
-- Official ISED exam structures
-  - Basic (100-question official distribution)
-  - Advanced (50-question official distribution)
-- Official TXT-delimited question banks (Basic & Advanced)
-- Optional CSV explanations file (BankQuestionJuly2025.csv) available via a dedicated download button
-- Mobile-friendly interface
-- Dark mode
-- Category performance statistics
-- Weak areas detection
-- “Retake Wrong Questions” mode
-- Category Training mode
-- Random / No-repeat / Exam modes
-- Full offline usage (no backend server required)
+English and French (bilingual UI)
 
-The app is 100% self-contained in a single `.html` file that you open in your web browser.
+Official ISED exam structures
 
----
+Basic (100-question official distribution)
 
-## 🚀 Features
+Advanced (50-question official distribution)
 
-### 🔤 Bilingual Interface (EN/FR)
+TXT delimited official question bank (amat_basic_quest_delim.txt / advanced equivalent)
 
-- Choose your preferred language at **Step 1**.  
-- All interface text, buttons, labels, and the Support/About section automatically switch between English and French.
+Mobile-friendly interface
 
-### 📂 Load Official ISED Question Banks
+Dark mode
 
-- Supports the **official TXT-delimited format**:
+Category performance statistics
 
-  ```text
-  question_id;question_en;optionA_en;...;question_fr;optionA_fr;...
-  ```
+Weak areas detection
 
-- Works for both:
-  - Official **Basic** exam question bank  
-  - Official **Advanced** exam question bank
+Retake Wrong Questions mode
 
-- You can load banks in two ways:
-  - Using the built-in **“Load official Basic/Advanced bank (from GitHub)”** buttons
-  - Or by selecting a **local TXT/CSV file** from your computer
+Category Training mode
 
-### 📑 Download Explanation CSV (from GitHub)
+Random / No-repeat / Exam modes
 
-- A dedicated button in **Step 2** lets users download the explanations CSV directly from GitHub:
+Full offline usage (no backend server required)
 
-  - File: `BankQuestions/BankQuestionJuly2025.csv`
-  - Purpose: provide detailed explanations and memory tricks for many questions
-  - This CSV is **optional** and meant as a companion reference; the app still works fully from the official TXT banks
+The app is 100% self-contained in a single .html file that you open in your web browser.
 
-- The button label is fully bilingual:
-  - EN: **“Download explanation CSV (from GitHub)”**
-  - FR: **« Télécharger le CSV d’explications (depuis GitHub) »**
+🚀 Features
+🔤 Bilingual Interface (EN/FR)
 
-### 🎯 Official Exam Simulation
+Choose your preferred language at Step 1.
+All interface text, buttons, labels, and the Support/About section automatically switch.
 
-**Exam mode** automatically selects questions according to the Government of Canada’s official category distribution.
+📂 Load Official ISED Question Banks
 
-#### Basic Exam (100 questions)
+Supports the official delimited TXT format:
 
-- 25 – Regulations & Policies  
-- 9 – Operating & Procedures  
-- 21 – Station Assembly & Safety  
-- 6 – Circuit Components  
-- 13 – Basic Electronics  
-- 13 – Antennas & Feedlines  
-- 8 – Propagation  
-- 5 – Interference & Suppression  
+question_id;question_en;optionA_en;...;question_fr;optionA_fr;...
 
-#### Advanced Exam (50 questions)
 
-- 5 – Advanced Theory  
-- 12 – Components & Circuits  
-- 6 – Measurements  
-- 4 – Power Supplies  
-- 9 – Transmitters & Modulation  
-- 5 – Receivers  
-- 9 – Antennas & Feedlines  
+Works for:
 
-### 🧠 Category Training Mode
+Basic exam question bank
 
-- Practice only the topics you choose (e.g., only Regulations, only Propagation, only Antennas).  
-- Very useful to focus on weak areas or specific sections of the syllabus.
+Advanced exam question bank
 
-### 🔁 Retake Wrong Questions Mode
+🎯 Official Exam Simulation
+
+Exam mode automatically selects questions per the Government of Canada’s official category distribution:
+
+Basic Exam (100 questions)
+
+25 – Regulations & Policies
+
+9 – Operating & Procedures
+
+21 – Station Assembly & Safety
+
+6 – Circuit Components
+
+13 – Basic Electronics
+
+13 – Antennas & Feedlines
+
+8 – Propagation
+
+5 – Interference & Suppression
+
+Advanced Exam (50 questions)
+
+5 – Advanced Theory
+
+12 – Components & Circuits
+
+6 – Measurements
+
+4 – Power Supplies
+
+9 – Transmitters & Modulation
+
+5 – Receivers
+
+9 – Antennas & Feedlines
+
+🧠 Category Training Mode
+
+Practice only topics you choose (e.g., only Regulations, only Propagation).
+
+🔁 Retake Wrong Questions Mode
 
 After completing an exam:
 
-- The app tracks which questions you answered incorrectly.
-- You can start a new session that contains **only your wrong questions**, to reinforce learning efficiently.
+The app identifies which questions you missed.
 
-### 🧮 Real-time Stats & Weak Area Detection
+You can begin a new quiz containing only the wrong questions.
 
-- Correct % per category
-- Questions asked vs. answered
-- Highlighted **weak areas** (< 70%)
-- Category-wise distribution in the final report
+🧮 Real-time Stats
 
-### 🌓 Dark Mode + 📱 Mobile Mode
+Correct % per category
 
-- Toggle **Dark Mode** to reduce eye strain.
-- Toggle **Mobile Mode** to optimize the layout for smaller screens.
-- The app remains fully usable on desktops, tablets, and phones.
+Correct vs asked
 
-### ☕ Donate Button (Support / About)
+Recent accuracy graph
 
-The app includes a bilingual **“About & Support”** card with a **Buy Me a Coffee** link:
+Weak area detection (<70%)
 
+🌓 Dark Mode + 📱 Mobile Mode
+
+Toggle dark/light theme
+
+Mobile layout optimization
+
+☕ Donate Button
+
+The app includes a bilingual “About & Support” card with a Buy Me a Coffee link:
 ➡️ https://buymeacoffee.com/fabiolus
 
-This lets grateful users support ongoing work on the trainer while keeping it free for everyone.
+🖥 How to Use
+1. Open the HTML file
 
----
+Double-click the file or drag it into your browser window.
 
-## 🖥 How to Use (English)
+2. Choose Language
 
-### 1. Open the HTML file
+Select English or Français.
 
-- Download the latest `index.html` (or app HTML file) from the repository.  
-- Open it in your browser (double-click or drag into a tab).
+3. Load the Question Bank
 
-### 2. Choose Language
+Click Select File and choose:
 
-- At **Step 1**, select **English** or **Français**.  
-- The entire UI switches to your chosen language.
+amat_basic_quest_delim.txt (official Basic)
 
-### 3. Load a Question Bank
+amat_advanced_quest_delim.txt (official Advanced)
 
-At **Step 2**, you have three options:
+4. Choose Study Mode
 
-1. **Load official Basic bank (from GitHub)**  
-2. **Load official Advanced bank (from GitHub)**  
-3. **Select local file** (TXT or CSV, compatible structure)
+Random
 
-Additionally, you can click the **“Download explanation CSV (from GitHub)”** button to get the companion CSV file with explanations (`BankQuestionJuly2025.csv`).  
-This CSV is **not required** to run the app — it’s a study aid that you can open separately (Excel, LibreOffice, etc.).
+No repeats
 
-### 4. Choose Study Mode
+Exam (official structure)
 
-Select one of the **Question modes**:
+Category training
 
-- **Random** — questions chosen randomly
-- **No repeats** — no question repeats until the entire pool has been used
-- **Exam (official structure)** — uses the official Basic (100) or Advanced (50) question distribution per category
-- **Category training (by topic)** — practice only selected categories
-- **Retake wrong questions** — appears after an exam and lets you retry only the missed questions
+Retake wrong questions (appears after completing an exam)
 
-### 5. Click “Next Question”
+5. Click “Next Question”
 
-- Use **Next Question** to move through the quiz.  
-- Use **Check Answer** (if available) to verify your choice and see whether you were correct.
+Begin practicing!
 
-### 6. Review Results
-
-At the end of an exam-style session, the app shows:
-
-- Overall score and pass category:
-  - **Pass with honours** (≥ 80%)
-  - **Pass** (70–79.9%)
-  - **Fail** (< 70%)
-- Detailed statistics per category (questions asked, correct, percentage)
-- Highlighted weak categories (< 70%)
-- A button to **practice only weak categories** or to **retake wrong questions**
-
----
-
-## 📱 Mobile-Friendly
+📱 Mobile-Friendly
 
 The entire app is optimized for:
 
-- iPhone / Android
-- Tablets
-- Desktops
-- Small-screen layouts
+iPhone / Android
 
-No installation is required if you run it as a simple HTML file in a browser.  
-If hosted as a PWA (Progressive Web App), it can also be **installed to the home screen** on mobile devices.
+Tablets
 
----
+Desktops
 
-## 🔧 Technical Notes
+Small-screen embedded layouts
 
-- No external libraries required (vanilla JavaScript, HTML, and CSS only).
-- Runs fully offline when the HTML file is opened locally or when installed as a PWA.
-- All logic (parsing, exam selection, statistics, UI updates) is implemented **client-side**.
-- No data is sent to any server — your study progress stays on your device.
-- Official question banks remain the property of ISED; this trainer only consumes the TXT/CSV provided by the user.
+No installation required — it runs directly in the browser.
 
----
+🔧 Technical Notes
 
-## 💛 Support the Project
+No external libraries required.
 
-If this HAM Exam Trainer helps you prepare for your Basic or Advanced certification, please consider supporting future updates:
+Runs fully offline.
+
+All logic (parsing, UI updates, exam selection algorithms) is implemented client-side in vanilla JavaScript.
+
+No data is sent to any server — your study progress stays on your device.
+
+💛 Support the Project
+
+If this HAM Exam Trainer helps you prepare for your Basic or Advanced certification, consider supporting future updates:
 
 ➡️ https://buymeacoffee.com/fabiolus
 
-Your support helps keep the app **free** and available for the entire Canadian amateur radio community.
+Your support helps keep the app free and available for the entire Canadian amateur radio community.
 
----
+📜 License
 
-## 📜 License
+This project is licensed under the **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International** (CC BY-NC-SA 4.0) license.
 
-This project is free for **personal and educational use**.  
-Redistribution or commercial repackaging requires permission.
+You may use, share, and adapt it for personal or educational, non-commercial purposes as long as you:
 
----
+- Give appropriate credit (author: Fabien Clermont, link to this repository).
+- Indicate if changes were made.
+- Distribute any modified versions under the same CC BY-NC-SA 4.0 license.
 
-## 📬 Contact
+**Commercial use, resale, or bundling this tool or its question banks into paid products, apps, training packages, or services is not permitted without prior written permission.**
 
-Questions, suggestions, or feature ideas?  
-Feel free to open an issue on GitHub or reach out:
+📬 Contact
 
-Fabien  
-`the_fabiolous@hotmail.com`
 
----
+Questions, suggestions, or feature ideas?
+Feel free to open an issue or reach out through GitHub.
 
-# 📡 Formateur d’Examen Radioamateur (Canada) — Application bilingue
+Fabien
+the_fabiolous@hotmail.com
+______________________________________________________________________________
 
-Un outil gratuit, complet et hors ligne pour étudier l’examen de Base et l’examen Avancé d’ISED Canada.
 
-## 🇨🇦 Aperçu
 
-Ce formateur d’examen radioamateur en HTML a été conçu pour les étudiantes et étudiants qui préparent l’examen de Base ou l’examen Avancé d’ISED Canada.  
+📡 Formateur d’Examen Radioamateur (Canada) — Application bilingue
+
+Un outil gratuit, complet et hors ligne pour étudier l’examen de base et avancé d’ISED Canada.
+
+🇨🇦 Aperçu
+
+Ce formateur d’examen radioamateur en HTML a été conçu pour les étudiantes et étudiants qui préparent l’examen de Base ou Avancé d’ISED Canada.
 Il offre :
 
-- Interface bilingue (anglais et français)
-- Structure officielle des examens d’ISED
-  - Base (100 questions, répartition officielle)
-  - Avancé (50 questions, répartition officielle)
-- Compatibilité avec les fichiers TXT délimités officiels (banques de questions Base et Avancé)
-- Fichier CSV d’explications optionnel (BankQuestionJuly2025.csv) téléchargeable via un bouton dédié
-- Interface adaptée au mobile
-- Mode sombre
-- Statistiques par catégorie
-- Détection des points faibles (< 70 %)
-- Mode **Reprendre les erreurs**
-- Entraînement par catégorie
-- Modes **Aléatoire / Sans répétition / Examen**
-- Fonctionne entièrement hors ligne (aucun serveur requis)
+Interface bilingue (anglais et français)
 
-L’application est contenue dans un seul fichier `.html` que vous ouvrez simplement dans votre navigateur.
+Structure officielle des examens d’ISED
 
----
+Base (100 questions)
 
-## 🚀 Fonctionnalités
+Avancé (50 questions)
 
-### 🔤 Interface bilingue (EN/FR)
+Compatibilité avec les fichiers TXT délimités officiels
 
-- Choisissez votre langue à l’**Étape 1**.  
-- Tous les textes, boutons et sections (y compris la carte « À propos et soutien ») s’adaptent automatiquement.
+Interface adaptée au mobile
 
-### 📂 Chargement des banques de questions officielles
+Mode sombre
+
+Statistiques par catégorie
+
+Détection des points faibles (<70 %)
+
+Mode Reprendre les erreurs
+
+Entraînement par catégorie
+
+Modes Aléatoire / Sans répétition / Examen
+
+Fonctionne entièrement hors ligne (aucun serveur requis)
+
+L’application est contenue dans un seul fichier .html que vous ouvrez simplement dans votre navigateur.
+
+🚀 Fonctionnalités
+🔤 Interface bilingue (EN/FR)
+
+Choisissez votre langue à l’Étape 1.
+Tous les textes, boutons et sections s’adaptent automatiquement.
+
+📂 Chargement des banques de questions officielles
 
 Compatible avec le format TXT délimité fourni par ISED :
 
-```text
 question_id;question_en;optionA_en;...;question_fr;optionA_fr;...
-```
+
 
 Fonctionne pour :
 
-- Banque de questions **Base**
-- Banque de questions **Avancé**
+Banque de questions Base
 
-Vous pouvez charger les banques de deux façons :
+Banque de questions Avancé
 
-- À l’aide des boutons intégrés **« Load official Basic/Advanced bank (from GitHub) »**  
-- Ou en sélectionnant un **fichier TXT/CSV local** sur votre ordinateur
+🎯 Simulation réelle de l’examen officiel
 
-### 📑 Téléchargement du CSV d’explications (depuis GitHub)
+Le mode Examen sélectionne automatiquement les questions selon la répartition officielle d’ISED.
 
-- Un bouton dédié à l’**Étape 2** permet de télécharger le fichier CSV d’explications directement depuis GitHub :
+Examen de Base (100 questions)
 
-  - Fichier : `BankQuestions/BankQuestionJuly2025.csv`
-  - Objectif : fournir des explications détaillées et des moyens mnémotechniques pour un grand nombre de questions
-  - Ce fichier est **optionnel** et sert d’outil d’étude complémentaire (Excel, LibreOffice, etc.)
+25 – Règlements et politiques
 
-- Le libellé du bouton est entièrement bilingue :
-  - EN : **“Download explanation CSV (from GitHub)”**
-  - FR : **« Télécharger le CSV d’explications (depuis GitHub) »**
+9 – Procédures d’exploitation
 
-### 🎯 Simulation réelle de l’examen officiel
+21 – Montage et sécurité
 
-Le mode **Examen** sélectionne automatiquement les questions selon la répartition officielle d’ISED.
+6 – Composants de circuits
 
-#### Examen de Base (100 questions)
+13 – Électronique de base
 
-- 25 – Règlements et politiques  
-- 9 – Procédures d’exploitation  
-- 21 – Montage et sécurité  
-- 6 – Composants de circuits  
-- 13 – Électronique de base  
-- 13 – Antennes et lignes de transmission  
-- 8 – Propagation  
-- 5 – Brouillage et suppression  
+13 – Antennes et lignes de transmission
 
-#### Examen Avancé (50 questions)
+8 – Propagation
 
-- 5 – Théorie avancée  
-- 12 – Composants et circuits  
-- 6 – Mesures  
-- 4 – Alimentations  
-- 9 – Émetteurs et modulation  
-- 5 – Récepteurs  
-- 9 – Antennes et lignes de transmission  
+5 – Brouillage et suppression
 
-### 🧠 Entraînement par catégorie
+Examen Avancé (50 questions)
 
-- Pratiquez uniquement les thèmes de votre choix (p. ex. seulement **Règlements**, seulement **Propagation**, seulement **Antennes**).  
-- Idéal pour cibler vos points à améliorer.
+5 – Théorie avancée
 
-### 🔁 Mode Reprendre les erreurs
+12 – Composants et circuits
+
+6 – Mesures
+
+4 – Alimentations
+
+9 – Émetteurs et modulation
+
+5 – Récepteurs
+
+9 – Antennes et lignes de transmission
+
+🧠 Entraînement par catégorie
+
+Pratiquez uniquement les thèmes de votre choix (p. ex. seulement Règlements, seulement Propagation).
+
+🔁 Mode Reprendre les erreurs
 
 Après un examen complet :
 
-- L’application identifie les questions erronées.
-- Vous pouvez lancer un nouveau quiz contenant uniquement ces questions pour consolider vos connaissances.
+L’application identifie les questions erronées.
 
-### 🧮 Statistiques en temps réel
+Vous pouvez lancer un nouveau quiz contenant uniquement ces questions.
 
-- Pourcentage de bonnes réponses par catégorie  
-- Suivi des questions posées / répondues  
-- Mise en évidence des **catégories faibles** (< 70 %)  
-- Répartition détaillée dans le rapport final
+🧮 Statistiques en temps réel
 
-### 🌓 Mode sombre + 📱 Mode mobile
+Pourcentage de bonnes réponses par catégorie
 
-- Thème sombre activable pour réduire la fatigue visuelle.  
-- Mode mobile pour une mise en page adaptée aux téléphones intelligents.  
-- L’interface reste utilisable sur ordinateurs, tablettes et mobiles.
+Suivi des questions posées / répondues
 
-### ☕ Bouton de soutien (« À propos et soutien »)
+Graphique d’exactitude récente
 
-Une section **« À propos et soutien »** inclut un bouton menant à votre page **Buy Me a Coffee** :
+Badge de point faible (<70 %)
 
+🌓 Mode sombre + 📱 Mode mobile
+
+Thème sombre activable
+
+Mise en page optimisée pour les téléphones intelligents et tablettes
+
+☕ Bouton de soutien (don)
+
+Une section « À propos et soutien » inclut un bouton menant à votre page Buy Me a Coffee :
 ➡️ https://buymeacoffee.com/fabiolus
 
-Cette option permet aux personnes reconnaissantes de soutenir le développement de l’outil tout en le gardant gratuit pour la communauté.
+🖥 Comment utiliser l’application
+1. Ouvrez le fichier HTML
 
----
+Double-cliquez ou ouvrez-le dans votre navigateur préféré.
 
-## 🖥 Comment utiliser l’application (Français)
+2. Choisissez la langue
 
-### 1. Ouvrez le fichier HTML
+Sélectionnez English ou Français.
 
-- Téléchargez le dernier fichier `index.html` (ou équivalent) depuis le dépôt GitHub.  
-- Ouvrez-le dans votre navigateur (double-clic ou glisser-déposer dans un onglet).
+3. Chargez la banque de questions
 
-### 2. Choisissez la langue
+Cliquez sur Sélectionner un fichier et choisissez :
 
-- À l’**Étape 1**, sélectionnez **English** ou **Français**.  
-- Toute l’interface s’adapte automatiquement à la langue choisie.
+amat_basic_quest_delim.txt (Examen de base)
 
-### 3. Chargez une banque de questions
+amat_advanced_quest_delim.txt (Examen avancé)
 
-À l’**Étape 2**, vous avez trois options :
+4. Choisissez un mode d’étude
 
-1. **Load official Basic bank (from GitHub)**  
-2. **Load official Advanced bank (from GitHub)**  
-3. **Sélectionner un fichier local** (TXT ou CSV, structure compatible)
+Aléatoire
 
-Vous pouvez également cliquer sur le bouton **« Télécharger le CSV d’explications (depuis GitHub) »** pour obtenir le fichier CSV d’explications (`BankQuestionJuly2025.csv`).  
-Ce fichier n’est **pas requis** pour faire fonctionner l’application — il sert d’outil d’étude complémentaire que vous pouvez ouvrir dans Excel, LibreOffice, etc.
+Sans répétition
 
-### 4. Choisissez un mode d’étude
+Examen (structure officielle)
 
-Sélectionnez l’un des **modes de questions** :
+Entraînement par catégorie
 
-- **Aléatoire** — questions choisies de façon aléatoire  
-- **Sans répétition** — aucune répétition avant d’avoir parcouru toute la banque  
-- **Examen (structure officielle)** — utilise la répartition officielle Base (100) ou Avancé (50) par catégorie  
-- **Entraînement par catégorie** — pratique ciblée sur certaines catégories  
-- **Reprendre les erreurs** — après un examen, ne reprend que les questions mal répondues
+Reprendre les erreurs (après un examen)
 
-### 5. Cliquez sur « Question suivante »
+5. Cliquez sur « Question suivante »
 
-- Utilisez **Question suivante** pour avancer dans le quiz.  
-- Utilisez **Vérifier la réponse** (si présent) pour confirmer vos choix.
+Et commencez votre étude !
 
-### 6. Consultez les résultats
-
-À la fin d’une session de type examen, l’application affiche :
-
-- Le score global et la catégorie de réussite :
-  - **Réussite avec mention** (≥ 80 %)  
-  - **Réussite** (70–79,9 %)  
-  - **Échec** (< 70 %)  
-- Des statistiques détaillées par catégorie (questions posées, bonnes réponses, pourcentage)
-- Les catégories faibles (< 70 %) mises en évidence
-- Des options pour **pratiquer seulement les catégories faibles** ou **reprendre uniquement les erreurs**
-
----
-
-## 📱 Optimisé pour mobile
+📱 Optimisé pour mobile
 
 L’interface s’adapte automatiquement :
 
-- iPhone / Android  
-- Tablettes  
-- Ordinateurs  
-- Petits écrans intégrés
+iPhone / Android
 
-Aucune installation n’est requise si vous utilisez simplement le fichier HTML dans votre navigateur.  
-Lorsqu’il est hébergé comme PWA (Progressive Web App), l’outil peut aussi être **installé sur l’écran d’accueil** des appareils mobiles.
+Tablettes
 
----
+Ordinateurs
 
-## 🔧 Notes techniques
+Petits écrans
 
-- Ne nécessite aucune bibliothèque externe.  
-- Fonctionne entièrement hors ligne (en local ou en PWA).  
-- Le chargement et l’analyse des questions, la logique d’examen, les statistiques et l’interface sont gérés **côté client** via JavaScript.  
-- Aucune donnée n’est envoyée à un serveur — tout reste sur votre appareil.  
-- Les banques de questions officielles demeurent la propriété d’ISED; l’outil ne fait qu’utiliser les fichiers TXT/CSV fournis par l’utilisatrice ou l’utilisateur.
+Aucune installation n’est requise — tout fonctionne dans le navigateur.
 
----
+🔧 Notes techniques
 
-## 💛 Soutenir le projet
+Ne nécessite aucune bibliothèque externe.
+
+Fonctionne entièrement hors ligne.
+
+Le chargement et l’analyse des questions, la logique d’examen, les statistiques et l’UI sont gérés côté client via JavaScript.
+
+Aucune donnée n’est envoyée à un serveur — tout reste sur votre appareil.
+
+💛 Soutenir le projet
 
 Si cet outil vous aide à vous préparer à l’examen radioamateur, vous pouvez soutenir son développement :
 
@@ -433,18 +406,22 @@ Si cet outil vous aide à vous préparer à l’examen radioamateur, vous pouvez
 
 Votre soutien aide à maintenir l’application gratuite pour l’ensemble de la communauté radioamateur du Canada.
 
----
+📜 Licence
 
-## 📜 Licence
+Ce projet est distribué sous la licence **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International** (CC BY-NC-SA 4.0).
 
-Projet gratuit pour **usage personnel et éducatif**.  
-La redistribution ou la revente commerciale nécessite une autorisation.
+Vous pouvez l’utiliser, le partager et l’adapter à des fins personnelles ou éducatives non commerciales, à condition de :
 
----
+- Mentionner clairement l’auteur (Fabien Clermont) et le dépôt d’origine.
+- Indiquer si des modifications ont été apportées.
+- Redistribuer toute version modifiée sous la même licence CC BY-NC-SA 4.0.
 
-## 📬 Contact
+**Toute utilisation commerciale, revente ou intégration de cet outil ou de ses banques de questions dans des produits, applications, formations ou services payants est interdite sans autorisation écrite préalable.**
 
-Pour toute question ou suggestion, veuillez ouvrir un billet (**issue**) sur GitHub ou communiquer avec :
+📬 Contact
 
-Fabien  
-`the_fabiolous@hotmail.com`
+
+Pour toute question ou suggestion, veuillez ouvrir un billet (issue) sur GitHub.
+
+Fabien
+the_fabiolous@hotmail.com
