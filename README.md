@@ -199,3 +199,209 @@ Redistribution or commercial repackaging requires permission.
 
 Questions, suggestions, or feature ideas?
 Feel free to open an issue or reach out through GitHub.
+
+
+______________________________________________________________________________
+
+
+
+📡 Formateur d’Examen Radioamateur (Canada) — Application bilingue
+
+Un outil gratuit, complet et hors ligne pour étudier l’examen de base et avancé d’ISED Canada.
+
+🇨🇦 Aperçu
+
+Ce formateur d’examen radioamateur en HTML a été conçu pour les étudiantes et étudiants qui préparent l’examen de Base ou Avancé d’ISED Canada.
+Il offre :
+
+Interface bilingue (anglais et français)
+
+Structure officielle des examens d’ISED
+
+Base (100 questions)
+
+Avancé (50 questions)
+
+Compatibilité avec les fichiers TXT délimités officiels
+
+Interface adaptée au mobile
+
+Mode sombre
+
+Statistiques par catégorie
+
+Détection des points faibles (<70 %)
+
+Mode Reprendre les erreurs
+
+Entraînement par catégorie
+
+Modes Aléatoire / Sans répétition / Examen
+
+Fonctionne entièrement hors ligne (aucun serveur requis)
+
+L’application est contenue dans un seul fichier .html que vous ouvrez simplement dans votre navigateur.
+
+🚀 Fonctionnalités
+🔤 Interface bilingue (EN/FR)
+
+Choisissez votre langue à l’Étape 1.
+Tous les textes, boutons et sections s’adaptent automatiquement.
+
+📂 Chargement des banques de questions officielles
+
+Compatible avec le format TXT délimité fourni par ISED :
+
+question_id;question_en;optionA_en;...;question_fr;optionA_fr;...
+
+
+Fonctionne pour :
+
+Banque de questions Base
+
+Banque de questions Avancé
+
+🎯 Simulation réelle de l’examen officiel
+
+Le mode Examen sélectionne automatiquement les questions selon la répartition officielle d’ISED.
+
+Examen de Base (100 questions)
+
+25 – Règlements et politiques
+
+9 – Procédures d’exploitation
+
+21 – Montage et sécurité
+
+6 – Composants de circuits
+
+13 – Électronique de base
+
+13 – Antennes et lignes de transmission
+
+8 – Propagation
+
+5 – Brouillage et suppression
+
+Examen Avancé (50 questions)
+
+5 – Théorie avancée
+
+12 – Composants et circuits
+
+6 – Mesures
+
+4 – Alimentations
+
+9 – Émetteurs et modulation
+
+5 – Récepteurs
+
+9 – Antennes et lignes de transmission
+
+🧠 Entraînement par catégorie
+
+Pratiquez uniquement les thèmes de votre choix (p. ex. seulement Règlements, seulement Propagation).
+
+🔁 Mode Reprendre les erreurs
+
+Après un examen complet :
+
+L’application identifie les questions erronées.
+
+Vous pouvez lancer un nouveau quiz contenant uniquement ces questions.
+
+🧮 Statistiques en temps réel
+
+Pourcentage de bonnes réponses par catégorie
+
+Suivi des questions posées / répondues
+
+Graphique d’exactitude récente
+
+Badge de point faible (<70 %)
+
+🌓 Mode sombre + 📱 Mode mobile
+
+Thème sombre activable
+
+Mise en page optimisée pour les téléphones intelligents et tablettes
+
+☕ Bouton de soutien (don)
+
+Une section « À propos et soutien » inclut un bouton menant à votre page Buy Me a Coffee :
+➡️ https://buymeacoffee.com/fabiolus
+
+🖥 Comment utiliser l’application
+1. Ouvrez le fichier HTML
+
+Double-cliquez ou ouvrez-le dans votre navigateur préféré.
+
+2. Choisissez la langue
+
+Sélectionnez English ou Français.
+
+3. Chargez la banque de questions
+
+Cliquez sur Sélectionner un fichier et choisissez :
+
+amat_basic_quest_delim.txt (Examen de base)
+
+amat_advanced_quest_delim.txt (Examen avancé)
+
+4. Choisissez un mode d’étude
+
+Aléatoire
+
+Sans répétition
+
+Examen (structure officielle)
+
+Entraînement par catégorie
+
+Reprendre les erreurs (après un examen)
+
+5. Cliquez sur « Question suivante »
+
+Et commencez votre étude !
+
+📱 Optimisé pour mobile
+
+L’interface s’adapte automatiquement :
+
+iPhone / Android
+
+Tablettes
+
+Ordinateurs
+
+Petits écrans
+
+Aucune installation n’est requise — tout fonctionne dans le navigateur.
+
+🔧 Notes techniques
+
+Ne nécessite aucune bibliothèque externe.
+
+Fonctionne entièrement hors ligne.
+
+Le chargement et l’analyse des questions, la logique d’examen, les statistiques et l’UI sont gérés côté client via JavaScript.
+
+Aucune donnée n’est envoyée à un serveur — tout reste sur votre appareil.
+
+💛 Soutenir le projet
+
+Si cet outil vous aide à vous préparer à l’examen radioamateur, vous pouvez soutenir son développement :
+
+➡️ https://buymeacoffee.com/fabiolus
+
+Votre soutien aide à maintenir l’application gratuite pour l’ensemble de la communauté radioamateur du Canada.
+
+📜 Licence
+
+Projet gratuit pour usage personnel et éducatif.
+La redistribution commerciale nécessite une autorisation.
+
+📬 Contact
+
+Pour toute question ou suggestion, veuillez ouvrir un billet (issue) sur GitHub.
