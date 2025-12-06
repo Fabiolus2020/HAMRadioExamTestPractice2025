@@ -715,12 +715,23 @@ body.mobile-mode #modeControls label {
     padding-bottom: 6px;
   }
 }
+
+.floating-toggle {
+  position: fixed;
+  right: 10px;
+  z-index: 999;
+}
+
+.floating-toggle.top-1 { top: 10px; }
+.floating-toggle.top-2 { top: 50px; }
+.floating-toggle.top-3 { top: 90px; }
+
 </style>
 </head>
 <body>
-<button id="darkToggle" class="btn-ghost" style="position:fixed;top:10px;right:10px;z-index:999;">Dark Mode</button>
-<button id="mobileToggle" class="btn-ghost" style="position:fixed;top:50px;right:10px;z-index:999;">Mobile Mode</button>
-<button id="fullscreenToggle" class="btn-ghost" style="position:fixed;top:90px;right:10px;z-index:999;">Full screen</button>
+<button id="darkToggle" class="btn-ghost floating-toggle top-1">Dark Mode</button>
+<button id="mobileToggle" class="btn-ghost floating-toggle top-2">Mobile Mode</button>
+<button id="fullscreenToggle" class="btn-ghost floating-toggle top-3">Full screen</button>
 <h1>Amateur Radio Exam Practice</h1>
 
 <div class="card">
@@ -838,6 +849,21 @@ body.mobile-mode #modeControls label {
 
 
 <script>
+function scrollToTopSmooth() {
+  try {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (e) {
+    window.scrollTo(0, 0);
+  }
+  try {
+    setTimeout(() => {
+      try {
+        window.scrollTo(0, 0);
+      } catch (e2) {}
+    }, 50);
+  } catch (e) {}
+}
+
 // Data structure:
 // {
 // bankID, // BankQuestionID (string, may be empty)
@@ -3068,21 +3094,9 @@ function resetApp() {
   applyLanguage();
   clearSessionState();
 
-  // Scroll to very top (run at the end so it behaves on mobile & desktop, including iOS)
-  try {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  } catch (e) {
-    window.scrollTo(0, 0);
-  }
-  try {
-    setTimeout(() => {
-      try {
-        window.scrollTo(0, 0);
-      } catch (e2) {}
-    }, 50);
-  } catch (e) {}
+    // Scroll to top (centralized helper for desktop + mobile, including iOS)
+  scrollToTopSmooth();
 }
-
 
 function updateScore() {
   const sStrings = UI_STRINGS[currentLanguage] || UI_STRINGS.en;
