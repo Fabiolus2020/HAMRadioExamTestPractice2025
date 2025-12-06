@@ -271,6 +271,12 @@ body.dark #memoryConsolidation {
   border-color: #e9d5ff;
 }
 
+.badge-adaptive {
+  background: #ecfeff;
+  color: #0e7490;
+  border-color: #67e8f9;
+}
+
 body.dark .mode-badge {
   background: #1f2937;
   color: #e5e7eb;
@@ -305,6 +311,12 @@ body.dark .badge-wrongonly {
   background: #4c1d95;
   color: #e9d5ff;
   border-color: #c4b5fd;
+}
+
+body.dark .badge-adaptive {
+  background: #083344;
+  color: #a5f3fc;
+  border-color: #22d3ee;
 }
 /* Sticky question header */
 #stickyQuestionHeader {
@@ -388,6 +400,46 @@ body.dark #stickyQuestionHeader {
   border-bottom: 1px solid #e5e7eb;
   text-align: left;
   vertical-align: middle;
+}
+
+.cat-heat-unseen {
+  background: #f9fafb;
+}
+
+.cat-heat-weak {
+  background: #fef2f2;
+}
+
+.cat-heat-risk {
+  background: #fef9c3;
+}
+
+.cat-heat-solid {
+  background: #ecfdf5;
+}
+
+.cat-heat-strong {
+  background: #ddf0ff;
+}
+
+body.dark .cat-heat-unseen {
+  background: #111827;
+}
+
+body.dark .cat-heat-weak {
+  background: #4b1010;
+}
+
+body.dark .cat-heat-risk {
+  background: #4b3d0a;
+}
+
+body.dark .cat-heat-solid {
+  background: #064e3b;
+}
+
+body.dark .cat-heat-strong {
+  background: #0f172a;
 }
 
 .cat-breakdown-table th {
@@ -632,6 +684,37 @@ body.mobile-mode #modeControls label {
   font-size: 0.95rem;
 }
 
+
+/* Auto mobile-orientation tuning */
+@media (max-width: 800px) {
+  body.mobile-orientation-portrait #quizCard {
+    font-size: 1.02rem;
+  }
+
+  body.mobile-orientation-portrait .question-text {
+    font-size: 1.05rem;
+    line-height: 1.5;
+  }
+
+  body.mobile-orientation-portrait button {
+    min-height: 40px;
+  }
+
+  body.mobile-orientation-portrait .controls {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 800px) and (orientation: landscape) {
+  body.mobile-orientation-landscape #quizCard {
+    font-size: 0.96rem;
+  }
+
+  body.mobile-orientation-landscape .controls button {
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+}
 </style>
 </head>
 <body>
@@ -698,6 +781,12 @@ body.mobile-mode #modeControls label {
   <div class="mode-item">
     <label><input type="radio" name="mode" id="modeCategory" value="category">
       <span id="labelCategory">Category training</span>
+    </label>
+  </div>
+
+  <div class="mode-item">
+    <label><input type="radio" name="mode" id="modeAdaptive" value="adaptive">
+      <span id="labelAdaptive">Smart (focus weak areas)</span>
     </label>
   </div>
 </div>
@@ -853,6 +942,9 @@ function updateCategoryTrainingVisibility() {
 let categoryStats = {};
 let cycleAnsweredCount = 0;
 
+let adaptiveCategoryStats = null;
+let adaptiveCategoryIndexMap = null;
+
 let currentLanguage = 'en';
 let storedLang = null;
 try {
@@ -890,6 +982,7 @@ const UI_STRINGS = {
     modeLabel: 'Question mode:',
     randomLabel: 'Random',
     noRepeatLabel: 'No repeats until all questions used',
+    adaptiveLabel: 'Smart (focus weak areas)',
     examLabelBasic: 'Exam (official structure: 100 questions)',
     examLabelAdvanced: 'Exam (official structure: 50 questions)',
     statusNoFile: 'No file loaded.',
@@ -947,6 +1040,7 @@ const UI_STRINGS = {
     modeExamIndicator: '🎯 Current mode: Exam',
     modeCategoryIndicator: '📚 Current mode: Category training',
     modeWrongOnlyIndicator: '🔁 Current mode: Retake wrong questions',
+    modeAdaptiveIndicator: '🧠 Current mode: Smart adaptive (focus weak areas)',
     categoryLabel: 'Category training',
     categoryTrainingTitle: 'Category training (by topic)',
     categoryHint: 'Select one or more categories (e.g., only Regulations, only Antennas, only Propagation), then click \"Next Question\".',
@@ -977,6 +1071,7 @@ fullScreenOff: 'Exit full screen',
     modeLabel: 'Mode de questions :',
     randomLabel: 'Aléatoire',
     noRepeatLabel: 'Sans répétition jusqu’à ce que toutes les questions soient utilisées',
+    adaptiveLabel: 'Intelligent (cible les faiblesses)',
     examLabelBasic: 'Examen (structure officielle : 100 questions)',
     examLabelAdvanced: 'Examen (structure officielle : 50 questions)',
     statusNoFile: 'Aucun fichier chargé.',
@@ -1032,6 +1127,7 @@ fullScreenOff: 'Exit full screen',
     modeExamIndicator: '🎯 Mode actuel : Examen',
     modeCategoryIndicator: '📚 Mode actuel : Entraînement par catégorie',
     modeWrongOnlyIndicator: '🔁 Mode actuel : Révision des erreurs',
+    modeAdaptiveIndicator: '🧠 Mode actuel : Apprentissage adaptatif (cible les faiblesses)',
     categoryLabel: 'Entraînement par catégorie',
     categoryTrainingTitle: 'Entraînement par catégorie (par thème)',
     categoryHint: 'Sélectionnez une ou plusieurs catégories (par ex. seulement Règlements, seulement Antennes, seulement Propagation), puis cliquez sur « Question suivante ».',
@@ -1050,11 +1146,12 @@ fullScreenOff: 'Exit full screen',
     fullScreenOff: 'Quitter le mode plein écran'
   }
 };
-
-
-
 function getLoadedMessageWithProfile(strings) {
-  const total = (questions && questions.length) ? questions.length : 0;
+  const total = questions ? questions.length : 0;
+  if (!total) {
+    return strings.statusNoFile || 'No file loaded.';
+  }
+
   if (currentLanguage === 'fr') {
     const profileLabel = examProfile === 'advanced'
       ? 'banque avancée'
@@ -1095,6 +1192,9 @@ function updateModeIndicator() {
   } else if (selectionMode === 'wrongonly') {
     label = strings.modeWrongOnlyIndicator || '';
     badgeClass = 'badge-wrongonly';
+  } else if (selectionMode === 'adaptive') {
+    label = strings.modeAdaptiveIndicator || '';
+    badgeClass = 'badge-adaptive';
   }
 
   if (!label) {
@@ -1154,6 +1254,9 @@ function applyLanguage() {
   if (downloadCsvBtnEl && strings.downloadCsvBtn) downloadCsvBtnEl.textContent = strings.downloadCsvBtn;
   if (labelCategoryEl && strings.categoryLabel) {
     labelCategoryEl.textContent = strings.categoryLabel;
+  }
+  if (labelAdaptiveEl && strings.adaptiveLabel) {
+    labelAdaptiveEl.textContent = strings.adaptiveLabel;
   }
   if (categoryTrainingTitleEl && strings.categoryTrainingTitle) {
     categoryTrainingTitleEl.textContent = strings.categoryTrainingTitle;
@@ -1244,6 +1347,7 @@ const resetBtn = document.getElementById('resetBtn');
 const modeRandomRadio = document.getElementById('modeRandom');
 const modeNoRepeatRadio = document.getElementById('modeNoRepeat');
 const modeExamRadio = document.getElementById('modeExam');
+const modeAdaptiveRadio = document.getElementById('modeAdaptive');
 const langEnRadio = document.getElementById('langEn');
 const langFrRadio = document.getElementById('langFr');
 const appTitleEl = document.querySelector('h1');
@@ -1257,6 +1361,7 @@ const labelRandomEl = document.getElementById('labelRandom');
 const labelNoRepeatEl = document.getElementById('labelNoRepeat');
 const labelExamEl = document.getElementById('labelExam');
 const labelCategoryEl = document.getElementById('labelCategory');
+const labelAdaptiveEl = document.getElementById('labelAdaptive');
 const modeIndicatorEl = document.getElementById('modeIndicator');
 const wrongTitleEl = document.getElementById('wrongTitle');
 const darkToggleBtn = document.getElementById('darkToggle');
@@ -1396,13 +1501,69 @@ if (modeCategoryRadio) {
   });
 }
 
+
+if (modeAdaptiveRadio) {
+  modeAdaptiveRadio.addEventListener('change', () => {
+    if (modeAdaptiveRadio.checked) {
+      selectionMode = 'adaptive';
+      const strings = UI_STRINGS[currentLanguage] || UI_STRINGS.en;
+      if (questions && questions.length > 0) {
+        statusEl.textContent = getLoadedMessageWithProfile(strings);
+      } else {
+        statusEl.textContent = strings.statusNoFile;
+      }
+      updateModeIndicator();
+      updateCategoryTrainingVisibility();
+      saveSessionState();
+    }
+  });
+}
+
 const categoryReportEl = document.getElementById('categoryReport');
 
 // Initial language apply once the full DOM is ready (ensures footer hyperlink is active)
+
+function updateOrientationClasses() {
+  try {
+    const body = document.body;
+    if (!body) return;
+    const isNarrow = window.innerWidth <= 800;
+    const isPortrait = window.matchMedia && window.matchMedia('(orientation: portrait)').matches;
+
+    body.classList.remove('mobile-orientation-portrait', 'mobile-orientation-landscape');
+
+    if (isNarrow) {
+      if (isPortrait) {
+        body.classList.add('mobile-orientation-portrait');
+      } else {
+        body.classList.add('mobile-orientation-landscape');
+      }
+    }
+  } catch (e) {
+    // Fail silently; orientation hints are non-critical
+  }
+}
+
+function initOrientationDetection() {
+  updateOrientationClasses();
+  window.addEventListener('resize', updateOrientationClasses);
+  if (window.matchMedia) {
+    try {
+      const mq = window.matchMedia('(orientation: portrait)');
+      if (mq && mq.addEventListener) {
+        mq.addEventListener('change', updateOrientationClasses);
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   applyLanguage();
   applyTheme();
   tryRestoreSession();
+  initOrientationDetection();
 });
 
 fileInput.addEventListener('change', handleFileSelect);
@@ -1429,6 +1590,8 @@ function loadOfficialBank(url) {
         }
         questions = parsed;
         detectProfileFromQuestions(questions);
+        adaptiveCategoryStats = {};
+        rebuildAdaptiveIndexMap();
         applyLanguage();
         statusEl.textContent = getLoadedMessageWithProfile(strings);
         quizCard.style.display = 'block';
@@ -1570,6 +1733,8 @@ if (isTxt) {
 } else {
   questions = parseCsvToQuestions(text);
 }
+adaptiveCategoryStats = {};
+rebuildAdaptiveIndexMap();
 if (questions.length === 0) {
 const strings = UI_STRINGS[currentLanguage] || UI_STRINGS.en;
 statusEl.textContent = strings.statusNoValid;
@@ -2022,6 +2187,21 @@ function resetCategoryStatsForExam() {
 }
 
 
+
+function rebuildAdaptiveIndexMap() {
+  adaptiveCategoryIndexMap = {};
+  if (!questions || questions.length === 0) return;
+  for (let i = 0; i < questions.length; i++) {
+    const q = questions[i];
+    if (!q || !q.category) continue;
+    const cat = q.category;
+    if (!adaptiveCategoryIndexMap[cat]) {
+      adaptiveCategoryIndexMap[cat] = [];
+    }
+    adaptiveCategoryIndexMap[cat].push(i);
+  }
+}
+
 function getBankHeaderText(q) {
   if (!q || !q.bankID || !q.bankID.trim()) return '';
   const strings = UI_STRINGS[currentLanguage] || UI_STRINGS.en;
@@ -2038,6 +2218,64 @@ function getBankHeaderText(q) {
     return `${baseLabel}: ${q.bankID} — ${catLabel}`;
   }
   return `${baseLabel}: ${q.bankID}`;
+}
+
+
+function pickAdaptiveQuestionIndex() {
+  if (!questions || questions.length === 0) return null;
+
+  if (!adaptiveCategoryIndexMap) {
+    rebuildAdaptiveIndexMap();
+  }
+  if (!adaptiveCategoryIndexMap) {
+    return Math.floor(Math.random() * questions.length);
+  }
+
+  const cats = Object.keys(adaptiveCategoryIndexMap);
+  if (cats.length === 0) {
+    return Math.floor(Math.random() * questions.length);
+  }
+
+  // Build weights based on difficulty per category:
+  // difficulty = 1 - (correct/total), with unseen categories treated as most difficult.
+  const weights = [];
+  let totalWeight = 0;
+  for (const cat of cats) {
+    const st = (adaptiveCategoryStats && adaptiveCategoryStats[cat])
+      ? adaptiveCategoryStats[cat]
+      : { correct: 0, total: 0 };
+
+    let difficulty = 1.0;
+    if (st.total > 0) {
+      difficulty = 1 - (st.correct / st.total);
+    }
+    if (difficulty < 0.1) difficulty = 0.1; // never fully zero out a category
+
+    const w = difficulty;
+    weights.push(w);
+    totalWeight += w;
+  }
+
+  if (totalWeight <= 0) {
+    return Math.floor(Math.random() * questions.length);
+  }
+
+  let r = Math.random() * totalWeight;
+  let chosenCat = cats[cats.length - 1];
+  for (let i = 0; i < cats.length; i++) {
+    if (r < weights[i]) {
+      chosenCat = cats[i];
+      break;
+    }
+    r -= weights[i];
+  }
+
+  const arr = adaptiveCategoryIndexMap[chosenCat];
+  if (!arr || arr.length === 0) {
+    return Math.floor(Math.random() * questions.length);
+  }
+  const idx = Math.floor(Math.random() * arr.length);
+  return arr[idx];
 }
 
 function showNextQuestion() {
@@ -2077,6 +2315,13 @@ if (selectionMode === 'norepeat' || selectionMode === 'exam' || selectionMode ==
     }
   }
   index = questionSequence[questionSequencePosition++];
+} else if (selectionMode === 'adaptive') {
+  const picked = pickAdaptiveQuestionIndex();
+  if (picked === null || typeof picked !== 'number' || picked < 0 || picked >= questions.length) {
+    index = Math.floor(Math.random() * questions.length);
+  } else {
+    index = picked;
+  }
 } else {
   index = Math.floor(Math.random() * questions.length);
 }
@@ -2192,6 +2437,20 @@ if (isCorrect) {
  totalCorrect++;
 } else {
  addWrongQuestion(currentQuestionIndex);
+}
+
+// Update adaptive per-category stats (all modes)
+if (q && q.category) {
+  if (!adaptiveCategoryStats) {
+    adaptiveCategoryStats = {};
+  }
+  if (!adaptiveCategoryStats[q.category]) {
+    adaptiveCategoryStats[q.category] = { correct: 0, total: 0 };
+  }
+  adaptiveCategoryStats[q.category].total += 1;
+  if (isCorrect) {
+    adaptiveCategoryStats[q.category].correct += 1;
+  }
 }
 
 // Track recent results (last 20)
@@ -2361,6 +2620,7 @@ function saveSessionState() {
     wrongQuestionIndices: Array.from(wrongQuestionIndices || []),
     categorySelection: Array.from(categorySelection || []),
     categoryStats: categoryStats || {},
+    adaptiveCategoryStats: adaptiveCategoryStats || null,
     cycleAnsweredCount: typeof cycleAnsweredCount === 'number' ? cycleAnsweredCount : 0,
     lastBankSource: lastBankSource || null,
     lastBankUrl: lastBankUrl || null,
@@ -2407,6 +2667,14 @@ function applyRestoredState(state, parsedQuestions) {
   categoryStats = state.categoryStats || {};
   cycleAnsweredCount = state.cycleAnsweredCount || 0;
 
+  // Restore adaptive category stats
+  adaptiveCategoryStats = state.adaptiveCategoryStats && typeof state.adaptiveCategoryStats === 'object'
+    ? state.adaptiveCategoryStats
+    : null;
+
+  // Rebuild adaptive index map from current questions
+  rebuildAdaptiveIndexMap();
+
   // Restore bank meta
   lastBankSource = state.lastBankSource || null;
   lastBankUrl = state.lastBankUrl || null;
@@ -2425,6 +2693,9 @@ function applyRestoredState(state, parsedQuestions) {
   }
   if (typeof modeCategoryRadio !== 'undefined' && modeCategoryRadio) {
     modeCategoryRadio.checked = (selectionMode === 'category');
+  }
+  if (typeof modeAdaptiveRadio !== 'undefined' && modeAdaptiveRadio) {
+    modeAdaptiveRadio.checked = (selectionMode === 'adaptive');
   }
 
   // Show quiz card
@@ -2683,6 +2954,8 @@ function resetApp() {
   categorySelection = new Set();
   categoryStats = {};
   cycleAnsweredCount = 0;
+  adaptiveCategoryStats = null;
+  adaptiveCategoryIndexMap = null;
   examProfile = 'basic';
   selectionMode = 'random';
   questionSequence = [];
@@ -2709,6 +2982,9 @@ function resetApp() {
   }
   if (typeof modeCategoryRadio !== 'undefined' && modeCategoryRadio) {
     modeCategoryRadio.checked = false;
+  }
+  if (typeof modeAdaptiveRadio !== 'undefined' && modeAdaptiveRadio) {
+    modeAdaptiveRadio.checked = false;
   }
 
   // Hide quiz card and clear question UI
@@ -2866,7 +3142,21 @@ function updateScore() {
           const labelObj = catInfo[code];
           const label = labelObj ? (labelObj[currentLanguage] || labelObj.en) : code;
 
-          html += `<tr>
+          // Determine heatmap class based on performance
+          let heatClass = 'cat-heat-unseen';
+          if (st.total > 0) {
+            if (pct < 50) {
+              heatClass = 'cat-heat-weak';
+            } else if (pct < 70) {
+              heatClass = 'cat-heat-risk';
+            } else if (pct < 85) {
+              heatClass = 'cat-heat-solid';
+            } else {
+              heatClass = 'cat-heat-strong';
+            }
+          }
+
+          html += `<tr class="${heatClass}">
 <td>${code} - ${label}</td>
 <td>${st.correct}</td>
 <td>${st.total}</td>
